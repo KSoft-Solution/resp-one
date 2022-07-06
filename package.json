@@ -18,5 +18,8 @@
     "helmet": "^5.1.0",
     "lusca": "^1.7.0",
     "mongoose": "^6.4.3"
+  },
+  "devDependencies": {
+    "dotenv": "^16.0.1"
   }
 }

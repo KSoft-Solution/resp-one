@@ -4,8 +4,9 @@ const helmet = require("helmet");
 const compression = require("compression");
 const lusca = require("lusca");
 const cookieParser = require("cookie-parser");
+const fileUpload = require('express-fileupload')
 
-const userRoute = require('./routes/user.routes')
+const routers = require('./routes/routes')
 
 const app = express();
 
@@ -13,6 +14,11 @@ const app = express();
 app.enable("trust proxy");
 app.use(express.json({ limit: "10kb" }));
 app.use(express.urlencoded({ extended: true, limit: "10kb" }));
+app.use(fileUpload({
+  limits: { fileSize: 50 * 1024 * 1024 },
+  useTempFiles:true
+}))
+app.use(cookieParser());
 app.use(cookieParser());
 app.use(compression());
 app.use(function (req, res, next) {
@@ -41,6 +47,7 @@ app.use((req, res, next) => {
 });
 app.use(cors());
 
-app.use("/api/v1/user", userRoute);
+// Here our API Routes
+app.use(routers);
 
 module.exports = app;

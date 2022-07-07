@@ -1,16 +1,6 @@
-const router = require('express').Router()
+const router = require("express").Router();
+const { getAllUser } = require("../controllers/user.controller");
 
+router.get("/allUsers", getAllUser);
 
-router.get('/',(req,res)=>{
-    res.status(200).json({
-        data:[
-            {
-                "name":"ashok sahu",
-                "job":"software"
-            }
-        ],
-        message:'success'
-    })
-})
-
-module.exports = router
+module.exports = router;

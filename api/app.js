@@ -5,6 +5,8 @@ const compression = require("compression");
 const lusca = require("lusca");
 const cookieParser = require("cookie-parser");
 
+const userRoute = require('./routes/user.routes')
+
 const app = express();
 
 //setting all middleware
@@ -39,10 +41,6 @@ app.use((req, res, next) => {
 });
 app.use(cors());
 
-app.use("/", (req, res) => {
-  res.status(200).json({
-    message: "working fine from api end",
-  });
-});
+app.use("/api/v1/user", userRoute);
 
 module.exports = app;

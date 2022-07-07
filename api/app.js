@@ -4,20 +4,25 @@ const helmet = require("helmet");
 const compression = require("compression");
 const lusca = require("lusca");
 const cookieParser = require("cookie-parser");
-const fileUpload = require('express-fileupload')
-
-const routers = require('./routes/routes')
+const fileUpload = require("express-fileupload");
+const session = require("express-session");
+const MongoStore = require("connect-mongo");
+const routers = require("./routes/routes");
 
 const app = express();
+const mongoUrl = process.env.MONGODB_URI;
+const session_secret = process.env.SESSION_SECRET;
 
 //setting all middleware
 app.enable("trust proxy");
 app.use(express.json({ limit: "10kb" }));
 app.use(express.urlencoded({ extended: true, limit: "10kb" }));
-app.use(fileUpload({
-  limits: { fileSize: 50 * 1024 * 1024 },
-  useTempFiles:true
-}))
+app.use(
+  fileUpload({
+    limits: { fileSize: 50 * 1024 * 1024 },
+    useTempFiles: true,
+  })
+);
 app.use(cookieParser());
 app.use(cookieParser());
 app.use(compression());
@@ -36,6 +41,18 @@ app.use(function (req, res, next) {
     return next();
   }
 });
+
+app.use(
+  session({
+    resave: true,
+    saveUninitialized: true,
+    secret: session_secret,
+    store: MongoStore.create({
+      mongoUrl,
+      autoRemove: "native",
+    }),
+  })
+);
 
 app.use(helmet.frameguard({ action: "DENY" }));
 app.use(lusca.xframe("SAMEORIGIN"));

@@ -1,10 +1,8 @@
 const mongoose = require("mongoose");
 
-const DB = process.env.MONGODB_URI
-
 const connectDB = async () => {
   await mongoose
-    .connect(DB, {})
+    .connect(process.env.MONGODB_URI, {})
     .then((uri) =>
       console.log(
         `database connected successfully with ${uri.connection.port}-${uri.connection.name}`

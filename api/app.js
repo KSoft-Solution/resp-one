@@ -41,7 +41,7 @@ app.use(cors());
 
 app.use("/", (req, res) => {
   res.status(200).json({
-    message: "working fine",
+    message: "working fine from api end",
   });
 });
 
